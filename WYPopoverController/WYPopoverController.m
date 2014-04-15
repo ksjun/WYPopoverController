@@ -1595,6 +1595,7 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 @synthesize popoverLayoutMargins;
 @synthesize popoverContentSize = popoverContentSize_;
 @synthesize animationDuration;
+@synthesize animationDampingRatio;
 @synthesize theme;
 
 static WYPopoverTheme *defaultTheme_ = nil;
@@ -1649,6 +1650,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
         popoverLayoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
         keyboardRect = CGRectZero;
         animationDuration = WY_POPOVER_DEFAULT_ANIMATION_DURATION;
+        animationDampingRatio = WY_POPOVER_DEFAULT_ANIMATION_DAMPING_RATIO;
         
         themeUpdatesEnabled = NO;
         
@@ -2000,7 +2002,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
             backgroundView.transform = startTransform;
         }
         
-        [UIView animateWithDuration:animationDuration animations:^{
+        void (^animationBlock)() = ^() {
             __typeof__(self) strongSelf = weakSelf;
             
             if (strongSelf)
@@ -2010,9 +2012,20 @@ static WYPopoverTheme *defaultTheme_ = nil;
                 strongSelf->backgroundView.transform = endTransform;
             }
             adjustTintDimmed();
-        } completion:^(BOOL finished) {
-            completionBlock(YES);
-        }];
+        };
+#ifdef WY_BASE_SDK_7_ENABLED
+        if ([UIView respondsToSelector:@selector(animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:)]) {
+            [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:animationDampingRatio initialSpringVelocity:(100.0/backgroundView.frame.size.height) options:0 animations:animationBlock completion:^(BOOL finished) {
+                completionBlock(YES);
+            }];
+        } else {
+#endif
+            [UIView animateWithDuration:animationDuration animations:animationBlock completion:^(BOOL finished) {
+                completionBlock(YES);
+            }];
+#ifdef WY_BASE_SDK_7_ENABLED
+        }
+#endif
     }
     else
     {

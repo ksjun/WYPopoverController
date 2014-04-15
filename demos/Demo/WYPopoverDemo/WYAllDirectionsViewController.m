@@ -121,6 +121,9 @@
         settingsPopoverController.passthroughViews = @[btn];
         settingsPopoverController.popoverLayoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
         settingsPopoverController.wantsDefaultContentAppearance = NO;
+        if (sender == topButton) {
+            settingsPopoverController.animationDampingRatio = 0.8f;
+        }
         
         [settingsPopoverController presentPopoverFromRect:btn.bounds
                                                    inView:btn
