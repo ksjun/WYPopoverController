@@ -123,7 +123,8 @@
         settingsPopoverController.popoverLayoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
         settingsPopoverController.wantsDefaultContentAppearance = NO;
         if (sender == topButton) {
-            settingsPopoverController.animationDampingRatio = 0.8f;
+            settingsPopoverController.animationDampingRatio = 0.6f;
+            settingsPopoverController.animationInitialVelocity = 0.0f;
         }
         
         if (sender == dialogButton)

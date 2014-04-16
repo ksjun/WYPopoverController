@@ -38,6 +38,10 @@
     #define WY_POPOVER_DEFAULT_ANIMATION_DAMPING_RATIO 1.0f
 #endif
 
+#ifndef WY_POPOVER_DEFAULT_ANIMATION_INITIAL_VELOCITY
+    #define WY_POPOVER_DEFAULT_ANIMATION_INITIAL_VELOCITY 1.0f
+#endif
+
 #ifndef WY_POPOVER_MIN_SIZE
     #define WY_POPOVER_MIN_SIZE                      CGSizeMake(240, 160)
 #endif
@@ -107,6 +111,7 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 @property (nonatomic, assign) CGSize                            popoverContentSize;
 @property (nonatomic, assign) float                             animationDuration;
 @property (nonatomic, assign) float                             animationDampingRatio;
+@property (nonatomic, assign) float                             animationInitialVelocity;
 
 @property (nonatomic, strong) WYPopoverTheme                   *theme;
 
