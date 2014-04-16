@@ -2013,7 +2013,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
 
 #ifdef WY_BASE_SDK_7_ENABLED
         if ([UIView respondsToSelector:@selector(animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:)]) {
-            [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:animationDampingRatio initialSpringVelocity:(100.0/backgroundView.frame.size.height) options:0 animations:animationBlock completion:^(BOOL finished) {
+            CGFloat initialSpringVelocity = 100.0 / fmax(backgroundView.frame.size.height, backgroundView.frame.size.width);
+            [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:animationDampingRatio initialSpringVelocity:initialSpringVelocity options:0 animations:animationBlock completion:^(BOOL finished) {
                 completionBlock(YES);
             }];
         } else {
