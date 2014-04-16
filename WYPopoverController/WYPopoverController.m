@@ -1596,6 +1596,7 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 @synthesize popoverContentSize = popoverContentSize_;
 @synthesize animationDuration;
 @synthesize animationDampingRatio;
+@synthesize animationInitialVelocity;
 @synthesize theme;
 
 static WYPopoverTheme *defaultTheme_ = nil;
@@ -1651,6 +1652,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
         keyboardRect = CGRectZero;
         animationDuration = WY_POPOVER_DEFAULT_ANIMATION_DURATION;
         animationDampingRatio = WY_POPOVER_DEFAULT_ANIMATION_DAMPING_RATIO;
+        animationInitialVelocity = WY_POPOVER_DEFAULT_ANIMATION_INITIAL_VELOCITY;
         
         themeUpdatesEnabled = NO;
         
@@ -2012,9 +2014,10 @@ static WYPopoverTheme *defaultTheme_ = nil;
         };
 
 #ifdef WY_BASE_SDK_7_ENABLED
-        if ([UIView respondsToSelector:@selector(animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:)]) {
-            CGFloat initialSpringVelocity = 100.0 / fmax(backgroundView.frame.size.height, backgroundView.frame.size.width);
-            [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:animationDampingRatio initialSpringVelocity:initialSpringVelocity options:0 animations:animationBlock completion:^(BOOL finished) {
+        if ((animationInitialVelocity != WY_POPOVER_DEFAULT_ANIMATION_INITIAL_VELOCITY ||
+             animationDampingRatio != WY_POPOVER_DEFAULT_ANIMATION_DAMPING_RATIO) &&
+            [UIView respondsToSelector:@selector(animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:)]) {
+            [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:animationDampingRatio initialSpringVelocity:animationInitialVelocity options:0 animations:animationBlock completion:^(BOOL finished) {
                 completionBlock(YES);
             }];
         } else {
