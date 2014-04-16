@@ -34,6 +34,7 @@
 @synthesize bottomLeftButton;
 @synthesize bottomButton;
 @synthesize bottomRightButton;
+@synthesize dialogButton;
 
 - (void)viewDidLoad
 {
@@ -125,11 +126,19 @@
             settingsPopoverController.animationDampingRatio = 0.8f;
         }
         
-        [settingsPopoverController presentPopoverFromRect:btn.bounds
-                                                   inView:btn
-                                 permittedArrowDirections:WYPopoverArrowDirectionAny
-                                                 animated:YES
-                                                  options:WYPopoverAnimationOptionFadeWithScale];
+        if (sender == dialogButton)
+        {
+            [settingsPopoverController presentPopoverAsDialogAnimated:YES
+                                                              options:WYPopoverAnimationOptionFadeWithScale];
+        }
+        else
+        {
+            [settingsPopoverController presentPopoverFromRect:btn.bounds
+                                                       inView:btn
+                                     permittedArrowDirections:WYPopoverArrowDirectionAny
+                                                     animated:YES
+                                                      options:WYPopoverAnimationOptionFadeWithScale];
+        }
     }
     else
     {
